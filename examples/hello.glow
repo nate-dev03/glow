@@ -1,0 +1,14 @@
+fun hypot(a, b) {
+    # functions can be nested:
+    fun square(x) {
+        return x**2
+    }
+
+    # functions can be anonymous:
+    sqrt = (: $1 ** 0.5)
+
+    return sqrt(square(a) + square(b))
+}
+
+x = hypot(10, 5)
+echo x

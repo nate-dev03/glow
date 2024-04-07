@@ -12,3 +12,5 @@ fun hypot(a, b) {
 
 x = hypot(10, 5)
 echo x
+
+echo "Hello world"

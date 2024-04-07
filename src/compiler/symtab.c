@@ -171,7 +171,7 @@ static void populate_symtable_from_node(GlowSymTable *st, GlowAST *ast)
 			populate_symtable_from_node(st, node->ast);
 		}
 		break;
-	case GLOW_NODE_DEF:
+	case GLOW_NODE_FUN:
 	case GLOW_NODE_GEN:
 	case GLOW_NODE_ACT: {
 		GlowAST *name = ast->left;
@@ -293,7 +293,7 @@ static void register_bindings_from_node(GlowSymTable *st, GlowAST *ast)
 			register_bindings_from_node(st, node->ast);
 		}
 		break;
-	case GLOW_NODE_DEF:
+	case GLOW_NODE_FUN:
 	case GLOW_NODE_GEN:
 	case GLOW_NODE_ACT: {
 		assert(ast->left->type == GLOW_NODE_IDENT);

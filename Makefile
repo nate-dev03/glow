@@ -1,5 +1,5 @@
 TARGET   := glow
-CC       := gcc
+CC       := clang
 WARNINGS := -Wall -Wextra
 CFLAGS   := -std=c11 -g -pedantic -pedantic-errors -fstrict-aliasing -pthread $(WARNINGS)
 LDLIBS   := -lm -ldl -lpthread

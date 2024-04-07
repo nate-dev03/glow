@@ -1,0 +1,8 @@
+fun test_list() {
+  list_var = [1, 2, 3]
+
+  list_var[0] = 10
+  echo list_var
+}
+
+test_list()

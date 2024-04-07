@@ -49,7 +49,7 @@ void glow_ast_free(GlowAST *ast)
 	case GLOW_NODE_FOR:
 		glow_ast_free(ast->v.middle);
 		break;
-	case GLOW_NODE_DEF:
+	case GLOW_NODE_FUN:
 	case GLOW_NODE_GEN:
 	case GLOW_NODE_ACT:
 	case GLOW_NODE_CALL:

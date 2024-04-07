@@ -315,7 +315,7 @@ static void compile_const(GlowCompiler *compiler, GlowAST *ast)
 		value.type = GLOW_CT_STRING;
 		value.value.s = ast->v.str_val;
 		break;
-	case GLOW_NODE_DEF:
+	case GLOW_NODE_FUN:
 	case GLOW_NODE_GEN:
 	case GLOW_NODE_ACT:
 	case GLOW_NODE_LAMBDA: {
@@ -785,7 +785,7 @@ static void compile_def_or_gen_or_act(GlowCompiler *compiler, GlowAST *ast, cons
 {
 	switch (select) {
 	case COMPILE_DEF:
-		GLOW_AST_TYPE_ASSERT(ast, GLOW_NODE_DEF);
+		GLOW_AST_TYPE_ASSERT(ast, GLOW_NODE_FUN);
 		break;
 	case COMPILE_GEN:
 		GLOW_AST_TYPE_ASSERT(ast, GLOW_NODE_GEN);
@@ -1287,7 +1287,7 @@ static void compile_node(GlowCompiler *compiler, GlowAST *ast, bool toplevel)
 	case GLOW_NODE_FOR:
 		compile_for(compiler, ast);
 		break;
-	case GLOW_NODE_DEF:
+	case GLOW_NODE_FUN:
 		compile_def(compiler, ast);
 		break;
 	case GLOW_NODE_GEN:
@@ -1509,7 +1509,7 @@ static void fill_ct_from_ast(GlowCompiler *compiler, GlowAST *ast)
 		value.type = GLOW_CT_STRING;
 		value.value.s = ast->v.str_val;
 		break;
-	case GLOW_NODE_DEF:
+	case GLOW_NODE_FUN:
 	case GLOW_NODE_GEN:
 	case GLOW_NODE_ACT:
 	case GLOW_NODE_LAMBDA: {
@@ -1522,7 +1522,7 @@ static void fill_ct_from_ast(GlowCompiler *compiler, GlowAST *ast)
 		unsigned int nargs;
 
 		const bool def_or_gen_or_act =
-		        (ast->type == GLOW_NODE_DEF || ast->type == GLOW_NODE_GEN || ast->type == GLOW_NODE_ACT);
+		        (ast->type == GLOW_NODE_FUN || ast->type == GLOW_NODE_GEN || ast->type == GLOW_NODE_ACT);
 
 		if (def_or_gen_or_act) {
 			nargs = 0;

@@ -123,7 +123,7 @@ static GlowAST *parse_print(GlowParser *p);
 static GlowAST *parse_if(GlowParser *p);
 static GlowAST *parse_while(GlowParser *p);
 static GlowAST *parse_for(GlowParser *p);
-static GlowAST *parse_def(GlowParser *p);
+static GlowAST *parse_fun(GlowParser *p);
 static GlowAST *parse_gen(GlowParser *p);
 static GlowAST *parse_act(GlowParser *p);
 static GlowAST *parse_break(GlowParser *p);
@@ -266,7 +266,7 @@ static GlowAST *parse_stmt(GlowParser *p)
 		stmt = parse_for(p);
 		break;
 	case GLOW_TOK_FUN:
-		stmt = parse_def(p);
+		stmt = parse_fun(p);
 		break;
 	case GLOW_TOK_GEN:
 		stmt = parse_gen(p);
@@ -962,16 +962,16 @@ static GlowAST *parse_for(GlowParser *p)
 	return ast;
 }
 
-#define PARSE_DEF 0
+#define PARSE_FUN 0
 #define PARSE_GEN 1
 #define PARSE_ACT 2
 
-static GlowAST *parse_def_or_gen_or_act(GlowParser *p, const int select)
+static GlowAST *parse_fun_or_gen_or_act(GlowParser *p, const int select)
 {
 	GlowToken *tok;
 
 	switch (select) {
-	case PARSE_DEF:
+	case PARSE_FUN:
 		tok = expect(p, GLOW_TOK_FUN);
 		break;
 	case PARSE_GEN:
@@ -1066,7 +1066,7 @@ static GlowAST *parse_def_or_gen_or_act(GlowParser *p, const int select)
 	const unsigned old_in_loop = p->in_loop;
 
 	switch (select) {
-	case PARSE_DEF:
+	case PARSE_FUN:
 		p->in_function = 1;
 		p->in_generator = 0;
 		p->in_actor = 0;
@@ -1105,8 +1105,8 @@ static GlowAST *parse_def_or_gen_or_act(GlowParser *p, const int select)
 	GlowAST *ast;
 
 	switch (select) {
-	case PARSE_DEF:
-		ast = glow_ast_new(GLOW_NODE_DEF, name, body, tok->lineno);
+	case PARSE_FUN:
+		ast = glow_ast_new(GLOW_NODE_FUN, name, body, tok->lineno);
 		break;
 	case PARSE_GEN:
 		ast = glow_ast_new(GLOW_NODE_GEN, name, body, tok->lineno);
@@ -1122,22 +1122,22 @@ static GlowAST *parse_def_or_gen_or_act(GlowParser *p, const int select)
 	return ast;
 }
 
-static GlowAST *parse_def(GlowParser *p)
+static GlowAST *parse_fun(GlowParser *p)
 {
-	return parse_def_or_gen_or_act(p, PARSE_DEF);
+	return parse_fun_or_gen_or_act(p, PARSE_FUN);
 }
 
 static GlowAST *parse_gen(GlowParser *p)
 {
-	return parse_def_or_gen_or_act(p, PARSE_GEN);
+	return parse_fun_or_gen_or_act(p, PARSE_GEN);
 }
 
 static GlowAST *parse_act(GlowParser *p)
 {
-	return parse_def_or_gen_or_act(p, PARSE_ACT);
+	return parse_fun_or_gen_or_act(p, PARSE_ACT);
 }
 
-#undef PARSE_DEF
+#undef PARSE_FUN
 #undef PARSE_GEN
 #undef PARSE_ACT
 
